@@ -1,9 +1,13 @@
+import environ
 import os
 import posixpath
 
+env = environ.Env(DEBUG=(bool, False))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = '3fe55d5f-8790-431f-8fe4-d187e995bef3'
-DEBUG = True
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
 ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'app',
@@ -43,10 +47,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pusinex.wsgi.application'
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+     "default": {
+        "ENGINE": "mssql",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASS"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
+        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", },
+        },
 }
 AUTH_PASSWORD_VALIDATORS = [
     {
