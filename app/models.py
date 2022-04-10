@@ -127,3 +127,15 @@ class Localidad(models.Model):
 
     def __str__(self):
         return f'{self.seccion:04d}: {self.localidad:04d} - {self.nombre}'
+
+
+class Pusinex(models.Model):
+    localidad = models.ForeignKey(Localidad, on_delete=models.CASCADE, related_name="pusinex_localidad")
+    status_pusinex = models.ForeignKey(StatusPusinex, on_delete=models.CASCADE(), related_name="pusinex_status")
+    fecha_levantamiento = models.DateField()
+
+    def __str__(self) -> str:
+        return f'{self.seccion.seccion:04d} ' \
+               f'{self.localidad.localidad:04d} ' \
+               f'{self.localidad.nombre} ' \
+               f'({self.fecha_levantamiento})'
