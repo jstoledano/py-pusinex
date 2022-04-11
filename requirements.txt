@@ -1,1 +1,3 @@
 django
+mssql-django
+django-environ
