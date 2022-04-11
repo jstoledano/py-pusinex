@@ -130,8 +130,9 @@ class Localidad(models.Model):
 
 
 class Pusinex(models.Model):
+    id = models.AutoField(primary_key=True)
     localidad = models.ForeignKey(Localidad, on_delete=models.CASCADE, related_name="pusinex_localidad")
-    status_pusinex = models.ForeignKey(StatusPusinex, on_delete=models.CASCADE(), related_name="pusinex_status")
+    status_pusinex = models.ForeignKey(StatusPusinex, on_delete=models.CASCADE, related_name="pusinex_status")
     fecha_levantamiento = models.DateField()
 
     def __str__(self) -> str:
