@@ -25,7 +25,8 @@ class Entidad(models.Model):
 
 
 class DistritoFederal(models.Model):
-    distrito_federal = models.PositiveIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
+    distrito_federal = models.PositiveIntegerField()
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name='entidad_distrito')
     cabecera = models.CharField(max_length=100)
 
@@ -39,7 +40,8 @@ class DistritoFederal(models.Model):
 
 
 class DistritoLocal(models.Model):
-    distrito_local = models.PositiveIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
+    distrito_local = models.PositiveIntegerField()
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name='entidad_distrito_local')
     cabecera = models.CharField(max_length=100)
 
@@ -53,8 +55,9 @@ class DistritoLocal(models.Model):
 
 
 class Municipio(models.Model):
+    id = models.AutoField(primary_key=True)
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name='entidad_municipio')
-    municipio = models.PositiveIntegerField(primary_key=True)
+    municipio = models.PositiveIntegerField()
     nombre = models.CharField(max_length=100)
 
     class Meta:
@@ -67,6 +70,7 @@ class Municipio(models.Model):
 
 
 class Seccion(models.Model):
+    id = models.AutoField(primary_key=True)
     entidad = models.ForeignKey(
         Entidad, on_delete=models.CASCADE,
         related_name='entidad_seccion', default=29)
@@ -75,7 +79,7 @@ class Seccion(models.Model):
         on_delete=models.CASCADE,
         related_name='distrito_federal_seccion')
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE, related_name='municipio_seccion')
-    seccion = models.PositiveIntegerField(primary_key=True)
+    seccion = models.PositiveIntegerField()
     tipo = models.CharField(max_length=1, choices=TIPO_SECCION)
 
     class Meta:
@@ -99,7 +103,7 @@ class StatusPusinex(models.Model):
         return self.descripcion
 
 
-class PapperSize(models.Model):
+class PaperSize(models.Model):
     tipo = models.CharField(max_length=1, primary_key=True)
     size = models.CharField("Tamaño", max_length=3)
     descripcion = models.CharField("Descripción", max_length=25)
@@ -121,7 +125,7 @@ class Localidad(models.Model):
 
     class Meta:
         verbose_name_plural = 'Localidades'
-        constraints =[
+        constraints = [
             UniqueConstraint(fields=['seccion', 'localidad'], name='idxLocalidad'),
         ]
 
@@ -136,7 +140,7 @@ class Pusinex(models.Model):
     fecha_levantamiento = models.DateField()
 
     def __str__(self) -> str:
-        return f'{self.seccion.seccion:04d} ' \
+        return f'{self.localidad.seccion:04d} ' \
                f'{self.localidad.localidad:04d} ' \
                f'{self.localidad.nombre} ' \
                f'({self.fecha_levantamiento})'

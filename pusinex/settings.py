@@ -47,15 +47,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pusinex.wsgi.application'
 DATABASES = {
-     "default": {
-        "ENGINE": "mssql",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASS"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
-        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", },
-        },
+    'default': env.db(),
+    'extra': env.db_url(
+        'SQLITE_URL',
+        default='sqlite:////tmp/my-tmp-sqlite.db'
+    )
 }
 AUTH_PASSWORD_VALIDATORS = [
     {

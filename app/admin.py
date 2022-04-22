@@ -7,7 +7,7 @@ from .models import (
     Municipio,
     Seccion,
     StatusPusinex,
-    PapperSize,
+    PaperSize,
     Localidad
 )
 
@@ -18,5 +18,5 @@ admin.site.register(DistritoLocal)
 admin.site.register(Municipio)
 admin.site.register(Seccion)
 admin.site.register(StatusPusinex)
-admin.site.register(PapperSize)
+admin.site.register(PaperSize)
 admin.site.register(Localidad)
