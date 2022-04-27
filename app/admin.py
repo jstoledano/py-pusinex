@@ -8,7 +8,9 @@ from .models import (
     Seccion,
     StatusPusinex,
     PaperSize,
-    Localidad
+    Localidad,
+    Revision,
+    TAC
 )
 
 
@@ -20,3 +22,5 @@ admin.site.register(Seccion)
 admin.site.register(StatusPusinex)
 admin.site.register(PaperSize)
 admin.site.register(Localidad)
+admin.site.register(TAC)
+admin.site.register(Revision)

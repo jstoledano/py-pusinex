@@ -150,7 +150,7 @@ class TAC(models.Model):
         verbose_name_plural = "Técnicos"
 
     def __str__(self):
-        return f'{self.distrito.distrito_federal:02d} - self.clave'
+        return f'{self.distrito.distrito_federal:02d} - {self.clave}'
 
 
 class Revision(models.Model):
@@ -161,7 +161,7 @@ class Revision(models.Model):
     archivo = models.FileField(blank=True, null=True)
     tac = models.ForeignKey(TAC, on_delete=models.CASCADE)
     # Trazabilidad
-    autor = models.ForeignKey(User, related_name='revisions_user', editable=False, on_delete=models.CASCADE)
+    autor = models.ForeignKey(User, related_name='revisions_user', editable=False, on_delete=models.CASCADE, default=1)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
