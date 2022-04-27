@@ -74,3 +74,4 @@ USE_L10N = True
 USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

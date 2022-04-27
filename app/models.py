@@ -25,8 +25,7 @@ class Entidad(models.Model):
 
 
 class DistritoFederal(models.Model):
-    id = models.AutoField(primary_key=True)
-    distrito_federal = models.PositiveIntegerField()
+    distrito_federal = models.PositiveIntegerField(primary_key=True)
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name='entidad_distrito')
     cabecera = models.CharField(max_length=100)
 
@@ -40,8 +39,7 @@ class DistritoFederal(models.Model):
 
 
 class DistritoLocal(models.Model):
-    id = models.AutoField(primary_key=True)
-    distrito_local = models.PositiveIntegerField()
+    distrito_local = models.PositiveIntegerField(primary_key=True)
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name='entidad_distrito_local')
     cabecera = models.CharField(max_length=100)
 
@@ -55,9 +53,8 @@ class DistritoLocal(models.Model):
 
 
 class Municipio(models.Model):
-    id = models.AutoField(primary_key=True)
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name='entidad_municipio')
-    municipio = models.PositiveIntegerField()
+    municipio = models.PositiveIntegerField(primary_key=True)
     nombre = models.CharField(max_length=100)
 
     class Meta:
@@ -70,16 +67,12 @@ class Municipio(models.Model):
 
 
 class Seccion(models.Model):
-    id = models.AutoField(primary_key=True)
-    entidad = models.ForeignKey(
-        Entidad, on_delete=models.CASCADE,
-        related_name='entidad_seccion', default=29)
     distrito_federal = models.ForeignKey(
         DistritoFederal,
         on_delete=models.CASCADE,
         related_name='distrito_federal_seccion')
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE, related_name='municipio_seccion')
-    seccion = models.PositiveIntegerField()
+    seccion = models.PositiveIntegerField(primary_key=True)
     tipo = models.CharField(max_length=1, choices=TIPO_SECCION)
 
     class Meta:
@@ -87,7 +80,7 @@ class Seccion(models.Model):
         verbose_name = 'Sección'
 
     def __str__(self) -> str:
-        seccion = f'{self.entidad.entidad:02d} {self.distrito_federal.distrito_federal:02d} {self.seccion:04d}'
+        seccion = f'{self.distrito_federal.distrito_federal:02d} {self.seccion:04d}'
         return seccion
 
 
@@ -117,7 +110,7 @@ class PaperSize(models.Model):
 
 
 class Localidad(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE, related_name="localidad_seccion")
     localidad = models.PositiveSmallIntegerField()
     nombre = models.CharField(max_length=150)
@@ -130,17 +123,17 @@ class Localidad(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.seccion:04d}: {self.localidad:04d} - {self.nombre}'
+        return f'{self.seccion.seccion:04d}: {self.localidad:04d} - {self.nombre}'
 
 
 class Pusinex(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     localidad = models.ForeignKey(Localidad, on_delete=models.CASCADE, related_name="pusinex_localidad")
     status_pusinex = models.ForeignKey(StatusPusinex, on_delete=models.CASCADE, related_name="pusinex_status")
     fecha_levantamiento = models.DateField()
 
     def __str__(self) -> str:
-        return f'{self.localidad.seccion:04d} ' \
+        return f'{self.localidad.seccion.seccion:04d} ' \
                f'{self.localidad.localidad:04d} ' \
                f'{self.localidad.nombre} ' \
                f'({self.fecha_levantamiento})'
