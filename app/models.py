@@ -3,6 +3,7 @@ Definition of models.
 """
 
 from django.db import models
+from django.contrib.auth.models import User
 from django.db.models import UniqueConstraint
 
 TIPO_SECCION = (
@@ -159,6 +160,12 @@ class Revision(models.Model):
     fecha_act = models.DateField()
     archivo = models.FileField(blank=True, null=True)
     tac = models.ForeignKey(TAC, on_delete=models.CASCADE)
+    # Trazabilidad
+    autor = models.ForeignKey(User, related_name='revisions_user', editable=False, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'29{self.pusinex.localidad.seccion.distrito_federal:02d}-{self.pusinex.localidad.seccion:04f}-R{self.revision:02d}H{self.pusinex:02d}'
+        return f'29{self.pusinex.localidad.seccion.distrito_federal:02d}-\
+        {self.pusinex.localidad.seccion:04f}-\
+        R{self.revision:02d}H{self.pusinex:02d}'
