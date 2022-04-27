@@ -137,3 +137,28 @@ class Pusinex(models.Model):
                f'{self.localidad.localidad:04d} ' \
                f'{self.localidad.nombre} ' \
                f'({self.fecha_levantamiento})'
+
+
+class TAC(models.Model):
+    distrito = models.ForeignKey(DistritoFederal, on_delete=models.CASCADE)
+    nombre = models.TextField(max_length=150)
+    clave = models.TextField(max_length=4)
+
+    class Meta:
+        verbose_name = "Técnico Cartógrafo"
+        verbose_name_plural = "Técnicos"
+
+    def __str__(self):
+        return f'{self.distrito.distrito_federal:02d} - self.clave'
+
+
+class Revision(models.Model):
+    pusinex = models.ForeignKey(Pusinex, on_delete=models.CASCADE)
+    revision = models.PositiveSmallIntegerField()
+    hoja = models.PositiveSmallIntegerField()
+    fecha_act = models.DateField()
+    archivo = models.FileField(blank=True, null=True)
+    tac = models.ForeignKey(TAC, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'29{self.pusinex.localidad.seccion.distrito_federal:02d}-{self.pusinex.localidad.seccion:04f}-R{self.revision:02d}H{self.pusinex:02d}'
