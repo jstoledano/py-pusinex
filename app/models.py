@@ -153,12 +153,27 @@ class TAC(models.Model):
         return f'{self.distrito.distrito_federal:02d} - {self.clave}'
 
 
+# Función para subir archivos
+def subir_documento(instancia, archivo):
+    import os.path
+    ext = archivo.split('.')[-1]
+    dto = instancia.pusinex.localidad.seccion.distrito_federal.distrito_federal
+    mpio = instancia.pusinex.localidad.seccion.municipio.municipio
+    secc = instancia.pusinex.localidad.seccion.seccion
+    loc = instancia.pusinex.localidad.localidad
+    rev = instancia.revision
+    hoja = instancia.hoja
+    nombre = f'PUSINEX_29{dto:02}-{mpio:03d}-{secc:04d}-{loc:04d}-R{rev:02d}H{hoja:02d}.pdf'
+    ruta = os.path.join('media','pusinex', f'Distrito {dto:02d}', nombre)
+    return ruta
+
+
 class Revision(models.Model):
     pusinex = models.ForeignKey(Pusinex, on_delete=models.CASCADE)
     revision = models.PositiveSmallIntegerField()
     hoja = models.PositiveSmallIntegerField()
     fecha_act = models.DateField()
-    archivo = models.FileField(blank=True, null=True)
+    archivo = models.FileField(upload_to=subir_documento, blank=True, null=True)
     tac = models.ForeignKey(TAC, on_delete=models.CASCADE)
     # Trazabilidad
     autor = models.ForeignKey(User, related_name='revisions_user', editable=False, on_delete=models.CASCADE, default=1)
@@ -166,6 +181,6 @@ class Revision(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'29{self.pusinex.localidad.seccion.distrito_federal:02d}-\
-        {self.pusinex.localidad.seccion:04f}-\
-        R{self.revision:02d}H{self.pusinex:02d}'
+        return f'PUSINEX_29{self.pusinex.localidad.seccion.distrito_federal.distrito_federal:02d}-\
+        {self.pusinex.localidad.seccion.municipio.municipio:03d}-{self.pusinex.localidad.seccion.seccion:04d}-\
+        {self.pusinex.localidad.localidad:04d}-R{self.revision:02d}H{self.hoja:02d}'
