@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from .models import DistritoFederal, Municipio
+from .models import DistritoFederal, Municipio, Seccion
 from rest_framework import serializers
 
 
@@ -14,3 +14,9 @@ class MunicipioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Municipio
         fields = ['municipio', 'nombre']
+
+
+class SeccionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seccion
+        fields = ['distrito_federal', 'municipio', 'seccion', 'tipo']

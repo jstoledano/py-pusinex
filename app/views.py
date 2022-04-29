@@ -2,14 +2,18 @@
 Definition of views.
 """
 
-from .models import DistritoFederal, Municipio
+from .models import (
+    DistritoFederal,
+    Municipio,
+    Seccion)
 from rest_framework import viewsets
 from rest_framework import permissions
 from datetime import datetime
 from django.views.generic import TemplateView
 from .serializers import (
     DistritoFederalSerializer,
-    MunicipioSerializer)
+    MunicipioSerializer,
+    SeccionSerializer)
 
 
 class Home(TemplateView):
@@ -36,3 +40,11 @@ class MunicipioSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer
+
+
+class SeccionSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint que devuelve las secciones
+    """
+    queryset = Seccion.objects.all()
+    serializer_class = SeccionSerializer
