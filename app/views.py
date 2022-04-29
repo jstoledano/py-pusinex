@@ -6,8 +6,7 @@ from .models import (DistritoFederal,
                      Municipio,
                      Seccion,
                      Localidad)
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, generics
 from datetime import datetime
 from django.views.generic import TemplateView
 from .serializers import (DistritoFederalSerializer,
@@ -24,6 +23,16 @@ class Home(TemplateView):
         context['title'] = 'Home Page'
         context['year'] = datetime.now().year
         return context
+
+
+class DistritoFederalList(generics.ListAPIView):
+    queryset = DistritoFederal.objects.all()
+    serializer_class = DistritoFederalSerializer
+
+
+class DistritoFederalDetail(generics.RetrieveAPIView):
+    queryset = DistritoFederal.objects.all()
+    serializer_class = DistritoFederalSerializer
 
 
 class DistritoFederalSet(viewsets.ReadOnlyModelViewSet):
